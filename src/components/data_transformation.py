@@ -118,6 +118,7 @@ class DataTransformation:
             input_features = train_df.drop(
                 columns=[self.config.terget_column], axis=1)
             target_feature_train_df = train_df[self.config.terget_column]
+
             logger.info("Input features {}".format(input_features.columns))
             logger.info("Terget is {}".format(self.config.terget_column))
 
@@ -133,9 +134,15 @@ class DataTransformation:
             transformed_test_data = preprocessing_obj.transform(
                 input_features_test)
 
+            print("Transformed train data: ", transformed_train_data.shape)
+            logger.info("Transfor train data shape: {}".format(
+                transformed_train_data.shape))
             train_arr = np.c_[transformed_train_data,
                               np.array(target_feature_train_df)]
 
+            print("Transformed test data: ", transformed_test_data.shape)
+            logger.info("Transfor test data shape: {}".format(
+                transformed_test_data.shape))
             test_arr = np.c_[transformed_test_data,
                              np.array(target_feature_test_df)]
 

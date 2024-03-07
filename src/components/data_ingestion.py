@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 
 
 from src.components.data_transformation import DataTransformationConfig, DataTransformation
-
+from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -101,5 +101,9 @@ if __name__ == "__main__":
 
     data_transformation_obj = DataTransformation(data_transformation_config)
 
-    a,b,c = data_transformation_obj.intiate_data_transformer(test_df_file=test_data, train_df_file=train_data)
-    print('returned: ', a, b, c)
+    train_arr,test_arr, c = data_transformation_obj.intiate_data_transformer(test_df_file=test_data, train_df_file=train_data)
+
+    model_trainer_config = ModelTrainerConfig()
+    model_trainer = ModelTrainer(model_trainer_config)
+
+    print(model_trainer.initiate_model_trainer(train_arr, test_arr))

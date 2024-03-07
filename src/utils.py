@@ -7,21 +7,22 @@ from src.exception import ExceptionHandler
 from src.logger import logger
 
 
-def save_object_to_pickle(file_path, obj):
+def save_object_to_pickle(file_path: str, obj):
     """
     This method is responsible for saving the object to the disk
 
     Args:
-    obj : object : The object that needs to be saved
-    file_path : str : The file path where the object needs to be saved
+    file_path (str) : The file path where the object needs to be saved
+    obj  (object) : The object that needs to be saved
 
     Returns:
-    None
+    bool: Returns True if the object is saved successfully
     """
     try:
         logger.info("Saving object to disk {}".format(file_path))
         with open(file_path, 'wb') as fs:
             pickle.dump(obj, fs)
+        return True
     except Exception as e:
         error_message = str(ExceptionHandler(str(e)))
         logger.error(error_message)
