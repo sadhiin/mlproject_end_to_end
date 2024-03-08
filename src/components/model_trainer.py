@@ -28,8 +28,7 @@ from xgboost import XGBRegressor
 
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path: str = os.path.join(
-        'artifacts', 'models', 'trained_model.pkl')
+    trained_model_file_path: str = os.path.join('artifacts', 'models', 'trained_model.pkl')
 
 
 class ModelTrainer:
@@ -39,6 +38,7 @@ class ModelTrainer:
     def __train_models(self, X_train, y_train, X_test, y_test, models_dict, params_dict) -> dict:
         """
         Trains multiple models using grid search for hyperparameter tuning and evaluates their performance.
+        And Save the best model
 
         Args:
             X_train (np.ndarray): Training data features.
@@ -74,7 +74,8 @@ class ModelTrainer:
 
                 # Calculate R-squared score
                 model_report[model_name] = [
-                    r2_score(y_test, y_pred), gs.best_params_]
+                    r2_score(y_test, y_pred),
+                    gs.best_params_]
 
             except Exception as e:
                 logger.error(f"Error training {model_name}: {e}")
@@ -169,17 +170,30 @@ class ModelTrainer:
 
 
             model_report = self.__train_models(
-                X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models_dict=models_list, params_dict=grid_params)
+                X_train=X_train,
+                y_train=y_train,
+                X_test=X_test,
+                y_test=y_test,
+                models_dict=models_list,
+                params_dict=grid_params)
 
             # Get the best model
-            best_model = max(
-                [(model, score) for model, score in model_report.items()], key=lambda x: x[1][0])
+            best_model = max([(model, score) for model, score in model_report.items()], key=lambda x: x[1][0])
             if best_model[1][0] < 0.6:
                 logger.error("Model R2 score is less than 0.6")
                 raise ExceptionHandler("Model R2 score is less than 0.6. Not finding a good model")
             logger.info(f"Best model: {best_model[0]}, R2 score: {best_model[1][0]}, Best parameters: {best_model[1][1]}")
-            return best_model
 
+            # Save the best model
+            best_model_obj = models_list[best_model[0]]
+            best_model_obj.set_params(**best_model[1][1])
+            best_model_obj.fit(X_train, y_train)
+
+            os.makedirs(os.path.dirname(self.config.trained_model_file_path), exist_ok=True)
+
+            save_object_to_pickle(self.config.trained_model_file_path, best_model_obj)
+
+            return best_model
         except Exception as e:
             logger.error(
                 "Error occured while training the model: {}".format(e))
