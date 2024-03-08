@@ -56,26 +56,28 @@ class ModelTrainer:
 
         for model_name, model_class in models_dict.items():
             try:
+                logger.info(f"Running traning for {model_name}.")
                 # Create model instance
                 model = model_class
 
                 # Perform grid search with cross-validation
-                gs = GridSearchCV(model, params_dict[model_name], cv=3)
-                gs.fit(X_train, y_train)
+                for CV in [3,5,7,9,10,11]:
+                    gs = GridSearchCV(model, params_dict[model_name], cv=CV)
+                    gs.fit(X_train, y_train)
 
-                # Set best parameters on the model
-                model.set_params(**gs.best_params_)
+                    # Set best parameters on the model
+                    model.set_params(**gs.best_params_)
 
-                # Train the model with best parameters
-                model.fit(X_train, y_train)
+                    # Train the model with best parameters
+                    model.fit(X_train, y_train)
 
-                # Make predictions on test data
-                y_pred = model.predict(X_test)
+                    # Make predictions on test data
+                    y_pred = model.predict(X_test)
 
-                # Calculate R-squared score
-                model_report[model_name] = [
-                    r2_score(y_test, y_pred),
-                    gs.best_params_]
+                    # Calculate R-squared score
+                    model_report[model_name] = [
+                        r2_score(y_test, y_pred),
+                        gs.best_params_, CV]
 
             except Exception as e:
                 logger.error(f"Error training {model_name}: {e}")
@@ -197,3 +199,6 @@ class ModelTrainer:
             logger.error(
                 "Error occured while training the model: {}".format(e))
             raise ExceptionHandler(e)
+
+if __name__=="__main__":
+    pass

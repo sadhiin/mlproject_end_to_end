@@ -18,6 +18,7 @@ from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
+    csv_path: str = "artifacts/students.csv"
     train_data_path: str = os.path.join('artifacts', 'data',  'train.csv')
     test_data_path: str = os.path.join('artifacts', 'data',  'test.csv')
     raw_data_path: str = os.path.join('artifacts', 'data', 'raw', 'data.csv')
@@ -54,7 +55,7 @@ class DataIngestion:
             logger.info("Initiating data ingestion process")
             logger.info("Creating raw data directory")
 
-            df = pd.read_csv(r"notebook\data\students.csv")
+            df = pd.read_csv(self.config.csv_path)
             os.makedirs(os.path.dirname(
                 self.config.raw_data_path), exist_ok=True)
             df.to_csv(self.config.raw_data_path, index=False, header=True)
@@ -86,24 +87,13 @@ if __name__ == "__main__":
     config = DataIngestionConfig()
     data_ingestion = DataIngestion(config)
     train_data, test_data = data_ingestion.intiate_data_ingestion()
-    # data = data_ingestion.load_data()
-    # print(data.head())
-    # print(data.shape)
-    # print(data.columns)
-    # print(data.dtypes)
-    # print(data.describe())
-    # print(data.info())
-    # print(data.isnull().sum())
-    # print(data.sample(5))
+    data = data_ingestion.load_data()
+    print(data.head())
+    print(data.shape)
+    print(data.columns)
+    print(data.dtypes)
+    print(data.describe())
+    print(data.info())
+    print(data.isnull().sum())
+    print(data.sample(5))
 
-    print("returned: ", train_data, test_data)
-    data_transformation_config = DataTransformationConfig()
-
-    data_transformation_obj = DataTransformation(data_transformation_config)
-
-    train_arr,test_arr, c = data_transformation_obj.intiate_data_transformer(test_df_file=test_data, train_df_file=train_data)
-
-    model_trainer_config = ModelTrainerConfig()
-    model_trainer = ModelTrainer(model_trainer_config)
-
-    print(model_trainer.initiate_model_trainer(train_arr, test_arr))
