@@ -1,0 +1,141 @@
+logistic_regression: !!python/object:sklearn.linear_model._logistic.LogisticRegression
+  C: 1.0
+  class_weight: null
+  dual: false
+  fit_intercept: true
+  intercept_scaling: 1
+  l1_ratio: null
+  max_iter: 100
+  multi_class: auto
+  n_jobs: null
+  penalty: l2
+  random_state: null
+  solver: lbfgs
+  tol: 0.0001
+  verbose: 0
+  warm_start: false
+
+knn: !!python/object:sklearn.neighbors._regression.KNeighborsRegressor
+  algorithm: auto
+  leaf_size: 30
+  metric: minkowski
+  metric_params: null
+  n_jobs: null
+  n_neighbors: 5
+  p: 2
+  weights: uniform
+
+decision_tree: !!python/object:sklearn.tree._classes.DecisionTreeRegressor
+  ccp_alpha: 0.0
+  criterion: mse
+  max_depth: null
+  max_features: null
+  max_leaf_nodes: null
+  min_impurity_decrease: 0.0
+  min_impurity_split: null
+  min_samples_leaf: 1
+  min_samples_split: 2
+  min_weight_fraction_leaf: 0.0
+  presort: deprecated
+  random_state: null
+  splitter: best
+
+random_forest: !!python/object:sklearn.ensemble._forest.RandomForestRegressor
+  bootstrap: true
+  ccp_alpha: 0.0
+  criterion: mse
+  max_depth: null
+  max_features: auto
+  max_leaf_nodes: null
+  max_samples: null
+  min_impurity_decrease: 0.0
+  min_impurity_split: null
+  min_samples_leaf: 1
+  min_samples_split: 2
+  min_weight_fraction_leaf: 0.0
+  n_estimators: 100
+  n_jobs: null
+  oob_score: false
+  random_state: null
+  verbose: 0
+  warm_start: false
+
+adaboost: !!python/object:sklearn.ensemble._weight_boosting.AdaBoostRegressor
+  base_estimator: !!python/object:sklearn.tree._classes.DecisionTreeRegressor
+    ccp_alpha: 0.0
+    criterion: mse
+    max_depth: 1
+    max_features: null
+    max_leaf_nodes: null
+    min_impurity_decrease: 0.0
+    min_impurity_split: null
+    min_samples_leaf: 1
+    min_samples_split: 2
+    min_weight_fraction_leaf: 0.0
+    presort: deprecated
+    random_state: null
+    splitter: best
+  learning_rate: 1.0
+  loss: linear
+  n_estimators: 50
+  random_state: null
+
+gradient_boosting: !!python/object:sklearn.ensemble._gb.GradientBoostingRegressor
+  alpha: 0.9
+  ccp_alpha: 0.0
+  criterion: friedman_mse
+  init: null
+  learning_rate: 0.1
+  loss: ls
+  max_depth: 3
+  max_features: null
+  max_leaf_nodes: null
+  min_impurity_decrease: 0.0
+  min_impurity_split: null
+  min_samples_leaf: 1
+  min_samples_split: 2
+  min_weight_fraction_leaf: 0.0
+  n_estimators: 100
+  n_iter_no_change: null
+  presort: deprecated
+  random_state: null
+  subsample: 1.0
+  tol: 0.0001
+  validation_fraction: 0.1
+  verbose: 0
+  warm_start: false
+
+xgboost: !!python/object:xgboost.sklearn.XGBRegressor
+  base_score: 0.5
+  booster: gbtree
+  colsample_bylevel: 1
+  colsample_bynode: 1
+  colsample_bytree: 1.0
+  gamma: 0
+  importance_type: gain
+  learning_rate: 0.1
+  max_delta_step: 0
+  max_depth: 3
+  min_child_weight: 1
+  missing: null
+  n_estimators: 100
+  n_jobs: 1
+  nthread: null
+  objective: reg:squarederror
+  random_state: 0
+  reg_alpha: 0
+  reg_lambda: 1
+  scale_pos_weight: 1
+  seed: null
+  silent: null
+  subsample: 1.0
+  verbosity: 1
+
+catboost: !!python/object:catboost.core.CatBoostClassifier
+  border_count: 254
+  depth: 6
+  iterations: 100
+  l2_leaf_reg: 3.0
+  learning_rate: 0.1
+  random_seed: null
+  silent: true

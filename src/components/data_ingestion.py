@@ -5,6 +5,7 @@
 
 import os
 import sys
+import yaml
 import pandas as pd
 from typing import Tuple
 from src.logger import logger
@@ -16,13 +17,23 @@ from sklearn.model_selection import train_test_split
 from src.components.data_transformation import DataTransformationConfig, DataTransformation
 from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 
+
 @dataclass
 class DataIngestionConfig:
     csv_path: str = "artifacts/students.csv"
-    train_data_path: str = os.path.join('artifacts', 'data',  'train.csv')
-    test_data_path: str = os.path.join('artifacts', 'data',  'test.csv')
+    train_data_path: str = os.path.join('artifacts', 'data', 'train.csv')
+    test_data_path: str = os.path.join('artifacts', 'data', 'test.csv')
     raw_data_path: str = os.path.join('artifacts', 'data', 'raw', 'data.csv')
 
+    @classmethod
+    def from_yaml(cls, file_path:str):
+        with open(file_path, 'r') as file:
+            try:
+                config_data = yaml.safe_load(file)
+                return cls(**config_data.get('config', {}))
+            except yaml.YAMLError as e:
+                logger.error(f"Error reading YAML file: {e}")
+                raise ExceptionHandler(e)            
 
 class DataIngestion:
     def __init__(self, config: DataIngestionConfig) -> None:
@@ -84,7 +95,8 @@ class DataIngestion:
 
 
 if __name__ == "__main__":
-    config = DataIngestionConfig()
+    print(os.getcwd())
+    config = DataIngestionConfig.from_yaml('./config.yaml')
     data_ingestion = DataIngestion(config)
     train_data, test_data = data_ingestion.intiate_data_ingestion()
     data = data_ingestion.load_data()

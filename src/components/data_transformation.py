@@ -11,6 +11,7 @@
 
 import os
 import sys
+import yaml
 import numpy as np
 import pandas as pd
 from typing import Tuple
@@ -28,13 +29,21 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path: str = os.path.join(
-        'artifacts', 'preprocessing', 'preprocessor.pkl')
     terget_column: str = 'math_score'
+    preprocessor_obj_file_path: str = os.path.join('artifacts', 'preprocessing', 'preprocessor.pkl')
     train_data_path: str = os.path.join('artifacts', 'data',  'train.csv')
     test_data_path: str = os.path.join('artifacts', 'data',  'test.csv')
-
-
+    
+    @classmethod
+    def from_yaml(cls, file_path:str):
+        with open(file_path, 'r') as file:
+            try:
+                config_data = yaml.safe_load(file)
+                return cls(**config_data.get('data_transform', {}))
+            except yaml.YAMLError as e:
+                logger.error(f"Error reading YAML file: {e}")
+                raise ExceptionHandler(e)
+            
 class DataTransformation:
     def __init__(self, config: DataTransformationConfig) -> None:
         self.config = config

@@ -1,0 +1,15 @@
+config:
+  csv_path: "artifacts/students.csv"
+  train_data_path: "artifacts/data/train.csv"
+  test_data_path: "artifacts/data/test.csv"
+  raw_data_path: "artifacts/data/raw/data.csv"
+
+
+data_transform:
+  terget_column: "math_score"
+  preprocessor_obj_file_path: "artifacts/preprocessing/preprocessor.pkl"
+  train_data_path: "artifacts/data/train.csv"
+  test_data_path: "artifacts/data/test.csv"
+
+model_trainer:
+  trained_model_file_path: "artifacts/models/trained_model.pkl" 
