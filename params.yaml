@@ -1,112 +1,33 @@
 logistic_regression:
-  C:
-    - 0.001
-    - 0.01
-    - 0.1
-    - 1
-    - 10
-    - 100
-  solver:
-    - liblinear
-    - lbfgs
-    - sag
-
+  C: [0.001, 0.01, 0.1, 1, 10, 100]
+  solver: [liblinear, lbfgs, sag]
 knn:
-  n_neighbors: !!python/range '1..21'
-  weights:
-    - uniform
-    - distance
-
+  n_neighbors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  weights: [uniform, distance]
 decision_tree:
-  max_depth:
-    - 3
-    - 5
-    - 8
-    - 10
-    - 12
-  min_samples_split:
-    - 2
-    - 5
-    - 10
-  min_samples_leaf:
-    - 1
-    - 2
-    - 4
-
+  max_depth: [3, 5, 8, 10, 12]
+  min_samples_split: [2, 5, 10]
+  min_samples_leaf: [1, 2, 4]
 random_forest:
-  n_estimators:
-    - 100
-    - 200
-    - 500
-  max_depth:
-    - 3
-    - 5
-    - 8
-  min_samples_split:
-    - 2
-    - 5
-  min_samples_leaf:
-    - 1
-    - 2
-
+  n_estimators: [100, 200, 500]
+  max_depth: [3, 5, 8]
+  min_samples_split: [2, 5]
+  min_samples_leaf: [1, 2]
 adaboost:
-  n_estimators:
-    - 50
-    - 100
-    - 200
-  learning_rate:
-    - 0.1
-    - 0.5
-    - 1.0
-
+  n_estimators: [50, 100, 200]
+  learning_rate: [0.1, 0.5, 1.0]
 gradient_boosting:
-  n_estimators:
-    - 100
-    - 200
-    - 500
-  learning_rate:
-    - 0.1
-    - 0.5
-    - 1.0
-  max_depth:
-    - 3
-    - 5
-    - 8
-
+  n_estimators: [100, 200, 500]
+  learning_rate: [0.1, 0.5, 1.0]
+  max_depth: [3, 5, 8]
 xgboost:
-  n_estimators:
-    - 100
-    - 200
-    - 500
-  max_depth:
-    - 3
-    - 5
-    - 8
-  learning_rate:
-    - 0.1
-    - 0.3
-    - 0.5
-  colsample_bytree:
-    - 0.7
-    - 1.0
-  subsample:
-    - 0.7
-    - 1.0
-
+  n_estimators: [100, 200, 500]
+  max_depth: [3, 5, 8]
+  learning_rate: [0.1, 0.3, 0.5]
+  colsample_bytree: [0.7, 1.0]
+  subsample: [0.7, 1.0]
 catboost:
-  iterations:
-    - 100
-    - 200
-    - 500
-  learning_rate:
-    - 0.03
-    - 0.1
-    - 0.3
-  depth:
-    - 4
-    - 6
-    - 8
-  l2_leaf_reg:
-    - 1
-    - 3
-    - 5
+  iterations: [100, 200, 500]
+  learning_rate: [0.03, 0.1, 0.3]
+  depth: [4, 6, 8]
+  l2_leaf_reg: [1, 3, 5]

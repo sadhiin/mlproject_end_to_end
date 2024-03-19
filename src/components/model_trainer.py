@@ -44,6 +44,18 @@ class ModelTrainerConfig:
 class ModelTrainer:
     def __init__(self, config: ModelTrainerConfig) -> None:
         self.config = config
+        # dictonary of the models
+        self.config.models_list = {
+                "logistic_regression": LogisticRegression(),
+                "knn": KNeighborsRegressor(),
+                "decision_tree": DecisionTreeRegressor(),
+                "random_forest": RandomForestRegressor(),
+                "adaboost": AdaBoostRegressor(),
+                "gradient_boosting": GradientBoostingRegressor(),
+                "xgboost": XGBRegressor(),
+                "catboost": CatBoostClassifier()
+            }
+
 
     def __train_models(self, X_train, y_train, X_test, y_test, models_dict, params_dict) -> dict:
         """
@@ -61,9 +73,11 @@ class ModelTrainer:
         Returns:
             dict: Dictionary containing test scores for each model.
         """
-
+        
         model_report = {}
-
+        
+        print("Printing models ", models_dict)
+        
         for model_name, model_class in models_dict.items():
             try:
                 logger.info(f"Running traning for {model_name}.")
@@ -78,7 +92,7 @@ class ModelTrainer:
                     # Set best parameters on the model
                     model.set_params(**gs.best_params_)
                     
-                    write_yaml_file(f"{model_name}.yaml", {'best_params':gs.best_params_, 'score':gs.best_score_})
+                    # write_yaml_file(f"{model_name}.yaml", {'best_params':gs.best_params_, 'score':gs.best_score_})
                     
                     # Train the model with best parameters
                     model.fit(X_train, y_train)
@@ -97,7 +111,7 @@ class ModelTrainer:
 
         return model_report
 
-    def initiate_model_trainer(self, train_array, test_array, model_cfg:dict, params_cfg:dict) -> Tuple[str, list[float,dict]]:
+    def initiate_model_trainer(self, train_array, test_array, params_cfg:dict) -> Tuple[str, list[float,dict]]:
         """
         Args:
             train_array (np.ndarray): Independent and dependent variables for training after preprocessed by columntransformer.
@@ -109,14 +123,13 @@ class ModelTrainer:
         Returns:
             r2score (float): R-squared score of the best model.
         """
+        
         try:
             logger.info("Initiating model training process")
             X_train, y_train, X_test, y_test = (train_array[:, :-1], train_array[:, -1], test_array[:, :-1], test_array[:, -1])
 
-            logger.info("Reading model and model hyperparameters for {},{}".format(model_cfg, params_cfg))
-            models_list = read_yaml_file(model_cfg)
-
-            grid_params = read_yaml_file(params_cfg)
+            models_list = self.config.models_list
+            grid_params = params_cfg
 
             model_report = self.__train_models(
                 X_train=X_train,

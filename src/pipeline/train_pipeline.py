@@ -3,15 +3,16 @@
 
 import os
 import sys
+from src.utils import read_yaml_file
 from src.components.data_ingestion import DataIngestionConfig, DataIngestion
 from src.components.data_transformation import DataTransformationConfig, DataTransformation
 from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 
 class TrainingPipeline:
-    def __init__(self, cfg_path, model_cfg, params_cfg)->None:
+    def __init__(self, cfg_path, params_cfg_path)->None:
         self.cfg= cfg_path
-        self.models = model_cfg
-        self.params = params_cfg
+        self.params = read_yaml_file(params_cfg_path)
+
     
     def run(self)->None:
         
@@ -29,7 +30,7 @@ class TrainingPipeline:
         model_trainer_config = ModelTrainerConfig.from_yaml(self.cfg)
         model_trainer = ModelTrainer(model_trainer_config)
 
-        print(model_trainer.initiate_model_trainer(train_arr, test_arr, self.models, self.params))
+        print(model_trainer.initiate_model_trainer(train_arr, test_arr, self.params))
         
 if __name__=="__main__":
     trainer = TrainingPipeline()
