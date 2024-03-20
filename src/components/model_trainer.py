@@ -80,12 +80,13 @@ class ModelTrainer:
         
         for model_name, model_class in models_dict.items():
             try:
-                logger.info(f"Running traning for {model_name}.")
+                logger.info(f"Running traning for '{model_name}' model.")
                 # Create model instance
                 model = model_class
 
                 # Perform grid search with cross-validation
                 for CV in [3,5,7,9,10,11]:
+                    logger.info(f"\tWith {CV} and\n\tparams: {params_dict[model_name]} .")
                     gs = GridSearchCV(model, params_dict[model_name], cv=CV)
                     gs.fit(X_train, y_train)
 
